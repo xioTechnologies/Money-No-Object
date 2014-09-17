@@ -376,10 +376,23 @@ const PIXEL uvColourPalette[] = {
     {0.937255f, 0.8588236f, 0.9647059f}
 };
 
-#define NUMBER_OF_PIXELS 16
+#include "DeviceID/DeviceID.h"
 
 void AnimiationInitialise() {
-    PixelStripInitialise(&pixelStrip, NUMBER_OF_PIXELS);
+    switch (DeviceIDGetID()) {
+        case HANDSHAKE:
+            PixelStripInitialise(&pixelStrip, 27);
+        case HIGH_FIVE:
+            PixelStripInitialise(&pixelStrip, 25); // number of pixels on wrist bands
+            break;
+        case HUG:
+            PixelStripInitialise(&pixelStrip, 16); // number of pixels badge
+            break;
+        case TAP: // pixels not used
+        default:
+            PixelStripInitialise(&pixelStrip, 16);
+            break;
+    }
 }
 
 #include <math.h>
@@ -452,9 +465,9 @@ void AnimationsDoTasks() {
             PixelStripMultiplyPixel(&pixelStrip, PixelMultiplyScalar(fadeColour, FADE_AMOUNT_2));
         }
 
-        NEOPIXEL neoPixels[NUMBER_OF_PIXELS];
-        PixelStripToNeoPixelArray(&pixelStrip, neoPixels, NUMBER_OF_PIXELS);
-        NeoPixelsWrite(neoPixels, NUMBER_OF_PIXELS);
+        NEOPIXEL neoPixels[MAX_NUMBER_OF_PIXELS];
+        PixelStripToNeoPixelArray(&pixelStrip, neoPixels, pixelStrip.numberOfPixels);
+        NeoPixelsWrite(neoPixels, pixelStrip.numberOfPixels);
 
         //        DEBUG_PIN_LOW();
     }

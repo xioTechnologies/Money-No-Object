@@ -7,6 +7,16 @@
 #define DEVICEID_H
 
 //------------------------------------------------------------------------------
+// Definitions
+
+typedef enum {
+    HANDSHAKE = 1,
+    HIGH_FIVE,
+    HUG,
+    TAP,
+} DEVICE_ID;
+
+//------------------------------------------------------------------------------
 // Function declarations
 
 void DeviceIDInitialise();
